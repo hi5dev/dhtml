@@ -1,0 +1,12 @@
+/.bundle/
+/.idea/
+/.ruby-gemset
+/.ruby-version
+/.vscode/
+/.yardoc
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
