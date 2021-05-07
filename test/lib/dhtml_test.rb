@@ -20,7 +20,7 @@ class DHTMLTest < Minitest::Test
 
     actual = Class.new.class_eval(read_fixture('example.rb')).read
 
-    assert_equal expected.strip, CGI.pretty(actual).strip
+    assert_equal no_ws(expected), no_ws(CGI.pretty(actual))
   end
 
   private
@@ -29,5 +29,13 @@ class DHTMLTest < Minitest::Test
     fixture_path = File.expand_path(File.join('..', 'fixtures', *name), __dir__)
 
     File.read(fixture_path)
+  end
+
+  def no_ws(text)
+    text
+      .split("\n")
+      .map(&:strip)
+      .reject(&:empty?)
+      .join("\n")
   end
 end
