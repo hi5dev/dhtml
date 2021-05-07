@@ -1,6 +1,6 @@
 # DHTML
 
-A fast, simple, and elegant DSL for generating HTML using Ruby.
+A fast, simple, and elegant DSL for generating HTML using Ruby. Also compatible with [Opal](https://opalrb.com/).
 
 Here's an example:
 
