@@ -4,6 +4,14 @@ require 'stringio'
 
 module DHTML
   module Document
+    TABLE_FOR_ESCAPE_HTML = {
+      "'" => '&#39;',
+      '&' => '&amp;',
+      '"' => '&quot;',
+      '<' => '&lt;',
+      '>' => '&gt;',
+    }
+
     # Writes the HTML doctype.
     #
     # @param [Symbol] type of document
@@ -43,18 +51,12 @@ module DHTML
           enc = Encoding::Converter.asciicompat_encoding(enc)
           string = enc ? string.encode(enc) : string.b
         end
-        table = Hash[TABLE_FOR_ESCAPE_HTML__.map { |pair| pair.map { |s| s.encode(enc) } }]
+        table = Hash[TABLE_FOR_ESCAPE_HTML.map { |pair| pair.map { |s| s.encode(enc) } }]
         string = string.gsub(/#{"['&\"<>]".encode(enc)}/, table)
         string.encode!(origenc) if origenc
         return string
       end
-      string.gsub(/['&\"<>]/, {
-        "'" => '&#39;',
-        '&' => '&amp;',
-        '"' => '&quot;',
-        '<' => '&lt;',
-        '>' => '&gt;',
-      })
+      string.gsub(/['&\"<>]/, TABLE_FOR_ESCAPE_HTML)
     end
 
     # @param [Symbol, String] name
