@@ -6,7 +6,13 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    ast (2.4.2)
     minitest (5.14.2)
+    opal (1.1.1)
+      ast (>= 2.3.0)
+      parser (~> 3.0)
+    parser (3.0.1.1)
+      ast (~> 2.4.1)
     rake (13.0.3)
 
 PLATFORMS
@@ -15,6 +21,7 @@ PLATFORMS
 DEPENDENCIES
   dhtml!
   minitest (~> 5.14)
+  opal (~> 1.0)
   rake (~> 13.0)
 
 BUNDLED WITH

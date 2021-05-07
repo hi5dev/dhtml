@@ -4,7 +4,7 @@ extend DHTML
 
 doctype :html5
 
-html(lang: 'en') {
+$html = html(lang: 'en') {
   head {
     meta charset: 'utf-8'
     title { 'Example' }

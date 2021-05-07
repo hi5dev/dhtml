@@ -1,35 +1,9 @@
 # frozen_string_literal: true
 
-require 'cgi'
-require 'cgi/html'
+require 'stringio'
 
 module DHTML
   module Document
-    include CGI::Util
-
-    # Snag the HTML doctype tags from the CGI class.
-    begin
-      # @type [String]
-      # @since 0.1.0
-      HTML3_DOCTYPE = Class.new { extend CGI::Html3 }.doctype
-
-      # @type [String]
-      # @since 0.1.0
-      HTML4_DOCTYPE = Class.new { extend CGI::Html4 }.doctype
-
-      # @type [String]
-      # @since 0.1.0
-      HTML4_FR_DOCTYPE = Class.new { extend CGI::Html4Fr }.doctype
-
-      # @type [String]
-      # @since 0.1.0
-      HTML4_TR_DOCTYPE = Class.new { extend CGI::Html4Tr }.doctype
-
-      # @type [String]
-      # @since 0.1.0
-      HTML5_DOCTYPE = Class.new { extend CGI::Html5 }.doctype.downcase
-    end
-
     # Writes the HTML doctype.
     #
     # @param [Symbol] type of document
@@ -37,15 +11,15 @@ module DHTML
     def doctype(type)
       tag = case type
       when :html3
-        HTML3_DOCTYPE
+        %|<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">|
       when :html4
-        HTML4_DOCTYPE
+        %|<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">|
       when :html4_framesets
-        HTML4_FR_DOCTYPE
+        %|<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">|
       when :html4_transitional
-        HTML4_TR_DOCTYPE
+        %|<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">|
       when :html5
-        HTML5_DOCTYPE
+        %|<!doctype html>|
       else
         fail ArgumentError, "unsupported doctype: #{type.inspect}"
       end
@@ -59,6 +33,28 @@ module DHTML
     # @since 0.1.0
     def document
       @document ||= StringIO.new
+    end
+
+    def h(string)
+      enc = string.encoding
+      unless enc.ascii_compatible?
+        if enc.dummy?
+          origenc = enc
+          enc = Encoding::Converter.asciicompat_encoding(enc)
+          string = enc ? string.encode(enc) : string.b
+        end
+        table = Hash[TABLE_FOR_ESCAPE_HTML__.map { |pair| pair.map { |s| s.encode(enc) } }]
+        string = string.gsub(/#{"['&\"<>]".encode(enc)}/, table)
+        string.encode!(origenc) if origenc
+        return string
+      end
+      string.gsub(/['&\"<>]/, {
+        "'" => '&#39;',
+        '&' => '&amp;',
+        '"' => '&quot;',
+        '<' => '&lt;',
+        '>' => '&gt;',
+      })
     end
 
     # @param [Symbol, String] name

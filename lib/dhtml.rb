@@ -4,19 +4,28 @@ require_relative 'dhtml/document'
 require_relative 'dhtml/version'
 
 module DHTML
-  include CGI::Util
   include DHTML::Document
 
   # List of tags that do not require a closing tag.
   #
   # @type [Array<Symbol>]
-  VOID_TAGS = %i[area audio base br col hr img input link meta param picture source video].freeze
+  VOID_TAGS = %i[area audio base br col hr img input link meta param picture source video]
 
   # @param [Symbol] tag
   # @return [TrueClass, FalseClass]
   # @since 0.1.0
   def void?(tag)
     VOID_TAGS.include?(tag)
+  end
+
+  if RUBY_ENGINE == 'opal'
+    def self.alias_method(tag, _)
+      define_method(tag) do |**attributes, &block|
+        write_html_tag(tag: tag, **attributes, &block)
+      end
+    end
+  else
+    VOID_TAGS.freeze
   end
 
   # An underscore is added to HTML tags that already have Ruby methods. This makes it both easy to remember, and to
