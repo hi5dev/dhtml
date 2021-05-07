@@ -10,7 +10,7 @@ class OpalTest < Minitest::Test
   include TestHelper
 
   def setup
-    Opal.append_path File.expand_path(File.join('..', '..', 'lib'), __dir__)
+    Opal.use_gem('dhtml')
 
     Opal.append_path File.expand_path(File.join('..', 'fixtures'), __dir__)
 

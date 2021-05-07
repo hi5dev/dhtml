@@ -3,12 +3,25 @@
 require_relative 'dhtml/document'
 require_relative 'dhtml/version'
 
+unless RUBY_ENGINE == 'opal'
+  begin
+    require 'opal'
+
+    Opal.append_path File.expand_path('..', __FILE__).untaint
+
+  rescue LoadError
+    nil
+
+  end
+end
+
 module DHTML
   include DHTML::Document
 
   # List of tags that do not require a closing tag.
   #
   # @type [Array<Symbol>]
+  # @since 0.1.0
   VOID_TAGS = %i[area audio base br col hr img input link meta param picture source video]
 
   # @param [Symbol] tag
