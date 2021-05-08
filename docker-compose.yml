@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  ruby:
+    build: "."
+    volumes: ["./:/src/dhtml"]
+
+  test:
+    command: "rake test"
+    extends:
+      service: "ruby"

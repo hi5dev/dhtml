@@ -72,6 +72,7 @@ module DHTML
 
     # @param [Hash] attributes
     # @return [String]
+    # @since 0.1.0
     def html_attributes(attributes)
       # noinspection RubyYardParamTypeMatch
       attributes.inject([]) { _1 << html_attribute(_2[0], _2[1]) }.join(' ')
@@ -81,6 +82,7 @@ module DHTML
     #
     # @param [String] string to escape.
     # @return [String] HTML escaped string.
+    # @since 0.1.0
     def html_escape(string)
       string.to_s.gsub(ESCAPE_HTML_PATTERN) { ESCAPE_HTML[_1] }
     end
@@ -98,6 +100,7 @@ module DHTML
     # @!attribute [String] tag
     # @!attribute [Hash] attributes
     # @return [Integer] Number of bytes written to the stream.
+    # @since 0.1.0
     def write_html_element(tag, attributes = {})
       document << '<'
       document << tag

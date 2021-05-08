@@ -86,6 +86,17 @@ run -> (_env) do
 end
 ```
 
+## Development
+
+A `Dockerfile` and Docker Compose configuration is provided to simplify the onboarding process. After cloning this 
+repository, all you have to do to get started is run the tests with:
+
+    $ docker-compose run test
+
+You can log into the container with:
+
+    $ docker-compose run ruby ash
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/hi5dev/dhtml.
