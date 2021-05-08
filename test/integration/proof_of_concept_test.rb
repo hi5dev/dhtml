@@ -17,6 +17,8 @@ class ProofOfConceptTest < Minitest::Test
           yield if block_given?
         end
       end
+
+      finish
     end
   end
 
@@ -33,12 +35,10 @@ class ProofOfConceptTest < Minitest::Test
   def test_index
     page = IndexPage.new
 
-    page.render
-
     expected = "<!doctype html><html><head><title>Proof of Concept</title></head><body><h1>It works!</h1></body></html>"
 
-    actual = page.read_html
+    html = page.render
 
-    assert_equal expected, actual
+    assert_equal expected, html.read
   end
 end

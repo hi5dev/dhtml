@@ -54,7 +54,7 @@ module Layout
       end
     end
 
-    document.tap(&:rewind)
+    finish
   end
 end
 
@@ -70,9 +70,9 @@ end
 
 page = IndexPage.new
 
-page.render
+html = page.render
 
-puts page.read_html
+puts html.read
 
 # => "<!doctype html><html><head><title>Proof of Concept</title></head><body><h1>It works!</h1></body></html>"
 ```

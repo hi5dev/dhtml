@@ -54,6 +54,14 @@ module DHTML
       @document ||= StringIO.new
     end
 
+    # Rewinds the document so it can be read.
+    #
+    # @return [StringIO]
+    # @since 0.1.0
+    def finish
+      document.tap(&:rewind)
+    end
+
     # @param [Symbol, String] name
     # @param [Symbol, String] value
     # @return [String]
