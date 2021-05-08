@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
-$LOAD_PATH.unshift File.expand_path(File.join('..', 'lib'), __dir__)
+ENV['BUNDLE_GEMFILE'] ||= File.expand_path(File.join('..', 'Gemfile'), __dir__)
+
+require 'bundler/setup'
+
+Bundler.require
 
 require 'dhtml'
 
