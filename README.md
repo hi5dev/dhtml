@@ -1,13 +1,13 @@
 # DHTML
 
-A fast, simple, and elegant DSL for generating HTML using Ruby. Also compatible with [Opal](https://opalrb.com/).
+A fast, simple, and elegant DSL for generating HTML using Ruby that is compatible with [Opal](https://opalrb.com/).
 
 Here's an example:
 
 ```ruby
-include DHTML
+extend DHTML
 
-doctype :html5
+doctype :html
 
 html(lang: 'en') {
   head {
@@ -18,31 +18,72 @@ html(lang: 'en') {
   }
   body {
     div(id: 'main') {
-      _p { |i|
-        i << "Some of Ruby's internal methods would be overwritten if this library added a method for all the "
-        i << "HTML tags. To solve this, the alias for these methods begins with an underscore. At present, "
-        i << "there are only two:"
+      _p { <<~TEXT }
+        Some of Ruby's internal methods would be overwritten if this library added a method for all the HTML tags. To
+        solve this, the alias for these methods begins with an underscore:
+      TEXT
 
-        code { '_p' }
-
-        i << h('&')
-
-        code { '_select' }
+      ol {
+        li { code { '_p' } }
+        li { code { '_select' } }
       }
     }
   }
 }
+
+puts read_html
 ```
 
-You can retrieve the generated HTML in one of two ways:
+## Proof of Concept
 
-1. `html` returns a `StringIO` object with the cursor at 0.
-2. `document` contains is the same `StringIO` object `html` returns, with the cursor at the end.
-
-Rewind `document` before you read it, or it will appear to be empty:
+Using Ruby to generate HTML makes it possible to write modular, easily testable views. Here's a simple example:
 
 ```ruby
-document.tap(&:rewind).read
+module Layout
+  include DHTML
+
+  def render
+    doctype :html
+
+    html do
+      head do
+        title { 'Proof of Concept' }
+      end
+      body do
+        yield if block_given?
+      end
+    end
+
+    document.tap(&:rewind)
+  end
+end
+
+class IndexPage
+  include Layout
+
+  def render
+    super do
+      h1 { 'It works!' }
+    end
+  end
+end
+
+page = IndexPage.new
+
+page.render
+
+puts page.read_html
+
+# => "<!doctype html><html><head><title>Proof of Concept</title></head><body><h1>It works!</h1></body></html>"
+```
+
+It's easy to see how that could be plugged into many Ruby web frameworks. Here's how the above example can work with
+Rack:
+
+```ruby
+run -> (_env) do
+  [200, { Rack::CONTENT_TYPE => 'text/html' }, IndexPage.new.render]
+end
 ```
 
 ## Contributing

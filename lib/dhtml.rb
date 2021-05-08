@@ -1,19 +1,8 @@
 # frozen_string_literal: true
 
 require_relative 'dhtml/document'
+require_relative 'dhtml/opal'
 require_relative 'dhtml/version'
-
-unless RUBY_ENGINE == 'opal'
-  begin
-    require 'opal'
-
-    Opal.append_path File.expand_path('..', __FILE__)
-
-  rescue LoadError
-    nil
-
-  end
-end
 
 module DHTML
   include DHTML::Document
@@ -32,13 +21,17 @@ module DHTML
   end
 
   if RUBY_ENGINE == 'opal'
+    # Opal does not support __callee__, so #alias_method is being overridden to provide implementation sufficient for
+    # this module.
+    #
+    # @param [Symbol] tag
+    # @return [Symbol] The name of the aliased method.
+    # @since 0.1.0
     def self.alias_method(tag, _)
       define_method(tag) do |**attributes, &block|
         write_html_tag(tag: tag, **attributes, &block)
       end
     end
-  else
-    VOID_TAGS.freeze
   end
 
   # An underscore is added to HTML tags that already have Ruby methods. This makes it both easy to remember, and to
@@ -161,11 +154,5 @@ module DHTML
     alias_method :var, :write_html_tag
     alias_method :video, :write_html_tag
     alias_method :wbr, :write_html_tag
-  end
-
-  def html(**attributes, &inner_html)
-    write_html_tag(tag: :html, **attributes, &inner_html)
-
-    document.tap(&:rewind)
   end
 end

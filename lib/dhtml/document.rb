@@ -4,13 +4,24 @@ require 'stringio'
 
 module DHTML
   module Document
-    TABLE_FOR_ESCAPE_HTML = {
-      "'" => '&#39;',
-      '&' => '&amp;',
-      '"' => '&quot;',
-      '<' => '&lt;',
-      '>' => '&gt;',
+    # Most commonly used HTML escape sequences.
+    #
+    # @type [Hash<String => String>]
+    # @since 0.1.0
+    ESCAPE_HTML = {
+      "&" => "&amp;",
+      "'" => "&#x27;",
+      "/" => "&#x2F;",
+      "<" => "&lt;",
+      ">" => "&gt;",
+      '"' => "&quot;"
     }
+
+    # Regular expression that matches the most common characters that need to be escaped in HTML strings.
+    #
+    # @type [Regexp]
+    # @since 0.1.0
+    ESCAPE_HTML_PATTERN = Regexp.union(*ESCAPE_HTML.keys)
 
     # Writes the HTML doctype.
     #
@@ -22,11 +33,11 @@ module DHTML
         %|<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">|
       when :html4
         %|<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">|
-      when :html4_framesets
+      when :html4_framesets, :html4_fr
         %|<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">|
-      when :html4_transitional
+      when :html4_transitional, :html4_tr
         %|<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">|
-      when :html5
+      when :html5, :html
         %|<!doctype html>|
       else
         fail ArgumentError, "unsupported doctype: #{type.inspect}"
@@ -43,22 +54,6 @@ module DHTML
       @document ||= StringIO.new
     end
 
-    def h(string)
-      enc = string.encoding
-      unless enc.ascii_compatible?
-        if enc.dummy?
-          origenc = enc
-          enc = Encoding::Converter.asciicompat_encoding(enc)
-          string = enc ? string.encode(enc) : string.b
-        end
-        table = Hash[TABLE_FOR_ESCAPE_HTML.map { |pair| pair.map { |s| s.encode(enc) } }]
-        string = string.gsub(/#{"['&\"<>]".encode(enc)}/, table)
-        string.encode!(origenc) if origenc
-        return string
-      end
-      string.gsub(/['&\"<>]/, TABLE_FOR_ESCAPE_HTML)
-    end
-
     # @param [Symbol, String] name
     # @param [Symbol, String] value
     # @return [String]
@@ -72,6 +67,24 @@ module DHTML
     def html_attributes(attributes)
       # noinspection RubyYardParamTypeMatch
       attributes.inject([]) { _1 << html_attribute(_2[0], _2[1]) }.join(' ')
+    end
+
+    # Escape ampersands, brackets and quotes for HTML.
+    #
+    # @param [String] string to escape.
+    # @return [String] HTML escaped string.
+    def html_escape(string)
+      string.to_s.gsub(ESCAPE_HTML_PATTERN) { ESCAPE_HTML[_1] }
+    end
+
+    alias_method :h, :html_escape
+
+    # Reads the entire HTML document.
+    #
+    # @return [String]
+    # @since 0.1.0
+    def read_html
+      document.tap(&:rewind).read
     end
 
     # @!attribute [String] tag
@@ -92,6 +105,9 @@ module DHTML
     # @return [void]
     # @since 0.1.0
     def write_html_tag(tag: __callee__, **attributes, &inner_html)
+      # Ensure the method isn't being called directly.
+      fail ArgumentError, 'invalid tag' if tag == :write_html_tag
+
       # Remove the underscore prefix added to prevent conflicts with internal Ruby methods.
       tag = tag.to_s
       tag = tag[1..-1] if tag[0] == '_'

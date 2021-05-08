@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'test_helper'
+require 'cgi'
 
 class DHTMLTest < Minitest::Test
   include TestHelper
@@ -20,7 +21,7 @@ class DHTMLTest < Minitest::Test
   def test_document
     expected = read_fixture('example.html')
 
-    actual = Class.new.class_eval(read_fixture('example.rb')).read
+    actual = Class.new.class_eval(read_fixture('example.rb'))
 
     assert_equal no_ws(expected), no_ws(CGI.pretty(actual))
   end

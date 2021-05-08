@@ -2,9 +2,9 @@
 
 extend DHTML
 
-doctype :html5
+doctype :html
 
-$html = html(lang: 'en') {
+html(lang: 'en') {
   head {
     meta charset: 'utf-8'
     title { 'Example' }
@@ -25,3 +25,5 @@ $html = html(lang: 'en') {
     }
   }
 }
+
+read_html
