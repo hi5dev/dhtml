@@ -6,7 +6,7 @@ A fast, simple, and elegant DSL for generating HTML using Ruby that is compatibl
 
 From the command line:
 
-    $ gem install dhtml:0.1.0
+    $ gem install dhtml:0.1
 
 In a Gemfile:
 
