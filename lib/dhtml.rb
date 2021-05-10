@@ -4,6 +4,7 @@ require_relative 'dhtml/document'
 require_relative 'dhtml/opal'
 require_relative 'dhtml/version'
 
+# @since 0.1.0
 module DHTML
   include DHTML::Document
 

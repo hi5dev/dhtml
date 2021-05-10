@@ -3,18 +3,21 @@
 require 'stringio'
 
 module DHTML
+  # Provides methods for generating HTML.
+  #
+  # @since 0.1.0
   module Document
     # Most commonly used HTML escape sequences.
     #
     # @type [Hash<String => String>]
     # @since 0.1.0
     ESCAPE_HTML = {
-      "&" => "&amp;",
-      "'" => "&#x27;",
-      "/" => "&#x2F;",
-      "<" => "&lt;",
-      ">" => "&gt;",
-      '"' => "&quot;"
+      "'" => '&#x27;',
+      '"' => '&quot;',
+      '&' => '&amp;',
+      '/' => '&#x2F;',
+      '<' => '&lt;',
+      '>' => '&gt;',
     }
 
     # Regular expression that matches the most common characters that need to be escaped in HTML strings.
@@ -62,6 +65,8 @@ module DHTML
       document.tap(&:rewind)
     end
 
+    # Generates an HTML attribute (e.g. +class="form"+).
+    #
     # @param [Symbol, String] name
     # @param [Symbol, String] value
     # @return [String]
@@ -70,6 +75,8 @@ module DHTML
       [h(name.to_s), h(value.to_s).inspect].join('=')
     end
 
+    # Generates a string of HTML attributes from a Hash.
+    #
     # @param [Hash] attributes
     # @return [String]
     # @since 0.1.0
@@ -106,6 +113,8 @@ module DHTML
       document.reopen
     end
 
+    # Writes the opening element for the given HTML tag to the document.
+    #
     # @!attribute [String] tag
     # @!attribute [Hash] attributes
     # @return [Integer] Number of bytes written to the stream.
