@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = spec.homepage
-  spec.metadata['changelog_uri'] = 'https://github.com/hi5dev/dhtml/blob/master/CHANGELOG.md'
+  spec.metadata['changelog_uri'] = 'https://github.com/hi5dev/dhtml/blob/base/CHANGELOG.md'
 
   spec.files = Dir[File.expand_path(File.join('lib', '**', '*.rb'), __dir__)] + %w[
     CHANGELOG.md
