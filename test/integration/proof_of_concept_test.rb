@@ -3,6 +3,8 @@
 require 'test_helper'
 
 class ProofOfConceptTest < Minitest::Test
+  include TestHelper
+
   module Layout
     include DHTML
 
@@ -10,6 +12,8 @@ class ProofOfConceptTest < Minitest::Test
     end
 
     def render
+      reset if document.length > 0
+
       doctype :html
 
       html do
@@ -34,13 +38,13 @@ class ProofOfConceptTest < Minitest::Test
   end
 
   def test_index
+    expected = read_fixture('proof_of_concept.html').strip
+
     page = IndexPage.new
+    assert_equal expected, page.render.read
 
-    expected = "<!doctype html><html><head><title>Proof of Concept</title></head><body><h1>It works!</h1></body></html>"
-
-    html = page.render
-
-    assert_equal expected, html.read
+    page.reset
+    assert_equal expected, page.render.read
   end
 
   def test_inner_body

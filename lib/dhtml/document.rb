@@ -97,6 +97,15 @@ module DHTML
       document.tap(&:rewind).read
     end
 
+    # Clears all content from the document.
+    #
+    # @return [StringIO]
+    # @since 0.1.1
+    def reset
+      document.close
+      document.reopen
+    end
+
     # @!attribute [String] tag
     # @!attribute [Hash] attributes
     # @return [Integer] Number of bytes written to the stream.

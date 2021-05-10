@@ -43,7 +43,12 @@ example:
 module Layout
   include DHTML
 
+  def inner_body
+  end
+
   def render
+    reset if document.length > 0
+
     doctype :html
 
     html do
@@ -51,7 +56,7 @@ module Layout
         title { 'Proof of Concept' }
       end
       body do
-        yield if block_given?
+        inner_body
       end
     end
 
@@ -62,10 +67,8 @@ end
 class IndexPage
   include Layout
 
-  def render
-    super do
-      h1 { 'It works!' }
-    end
+  def inner_body
+    h1 { 'It works!' }
   end
 end
 
