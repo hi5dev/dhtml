@@ -1,37 +1,123 @@
-## Welcome to GitHub Pages
+# DHTML
 
-You can use the [editor on GitHub](https://github.com/hi5dev/dhtml/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+A fast, simple, and elegant DSL for generating HTML using Ruby that is compatible with [Opal](https://opalrb.com/).
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Installation
 
-### Markdown
+From the command line:
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+    $ gem install dhtml:0.1.0
 
-```markdown
-Syntax highlighted code block
+In a Gemfile:
 
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```ruby
+gem 'dhtml', '~> 0.1'
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## Example
 
-### Jekyll Themes
+```ruby
+extend DHTML
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/hi5dev/dhtml/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+doctype :html
 
-### Support or Contact
+html(lang: 'en') {
+  head {
+    meta charset: 'utf-8'
+    title { 'Example' }
+    link rel: 'stylesheet', href: 'style.css'
+    script src: 'main.js'
+  }
+  body {
+    div(id: 'main') {
+      _p { <<~TEXT }
+        Some of Ruby's internal methods would be overwritten if this library added a method for all the
+        HTML tags. To solve this, the alias for these methods begins with an underscore:
+      TEXT
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+      ol {
+        li { code { '_p' } }
+        li { code { '_select' } }
+      }
+    }
+  }
+}
+
+puts read_html
+```
+
+## Proof of Concept
+
+Using Ruby to generate HTML makes it possible to write modular, easily testable views. Here's a simple
+example:
+
+```ruby
+module Layout
+  include DHTML
+
+  def inner_body
+  end
+
+  def render
+    reset if document.length > 0
+
+    doctype :html
+
+    html do
+      head do
+        title { 'Proof of Concept' }
+      end
+      body do
+        inner_body
+      end
+    end
+
+    finish
+  end
+end
+
+class IndexPage
+  include Layout
+
+  def inner_body
+    h1 { 'It works!' }
+  end
+end
+
+page = IndexPage.new
+
+html = page.render
+
+puts html.read
+
+# => "<!doctype html><html><head><title>Proof of Concept</title></head><body><h1>It works!</h1></body></html>"
+```
+
+It's easy to see how that could be plugged into many Ruby web frameworks. Here's how the above example can work with
+Rack:
+
+```ruby
+run -> (_env) do
+  [200, { Rack::CONTENT_TYPE => 'text/html' }, IndexPage.new.render]
+end
+```
+
+## Development
+
+A `Dockerfile` and Docker Compose configuration is provided to simplify the onboarding process. After cloning this
+repository, all you have to do to get started is run the tests with:
+
+    $ docker-compose run test
+
+You can log into the container with:
+
+    $ docker-compose run ruby ash
+
+## Contributing
+
+Bug reports and pull requests are welcome on GitHub at https://github.com/hi5dev/dhtml. Make sure to add your
+contact information to `spec.authors` and `spec.email` in the gemspec file if you do contribute.
+
+## License
+
+The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
