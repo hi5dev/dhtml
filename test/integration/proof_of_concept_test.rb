@@ -6,6 +6,9 @@ class ProofOfConceptTest < Minitest::Test
   module Layout
     include DHTML
 
+    def inner_body
+    end
+
     def render
       doctype :html
 
@@ -14,7 +17,7 @@ class ProofOfConceptTest < Minitest::Test
           title { 'Proof of Concept' }
         end
         body do
-          yield if block_given?
+          inner_body
         end
       end
 
@@ -25,10 +28,8 @@ class ProofOfConceptTest < Minitest::Test
   class IndexPage
     include Layout
 
-    def render
-      super do
-        h1 { 'It works!' }
-      end
+    def inner_body
+      h1 { 'It works!' }
     end
   end
 
@@ -41,4 +42,11 @@ class ProofOfConceptTest < Minitest::Test
 
     assert_equal expected, html.read
   end
+
+  def test_inner_body
+    page = IndexPage.new.tap(&:inner_body)
+
+    assert_equal '<h1>It works!</h1>', page.read_html
+  end
 end
+

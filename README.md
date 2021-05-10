@@ -99,7 +99,8 @@ You can log into the container with:
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/hi5dev/dhtml.
+Bug reports and pull requests are welcome on GitHub at https://github.com/hi5dev/dhtml. Make sure to add your 
+contact information to `spec.authors` and `spec.email` in the gemspec file if you do contribute.
 
 ## License
 

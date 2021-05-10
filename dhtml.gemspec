@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors = ['Travis Haynes']
   spec.email = %w[travis@hi5dev.com]
 
-  spec.summary = 'Generate HTML using a simple and clean Ruby DSL.'
+  spec.summary = 'A fast, simple, and elegant DSL for generating HTML using Ruby. Also compatible with Opal.'
   spec.description = spec.summary
   spec.homepage = 'https://github.com/hi5dev/dhtml'
   spec.license = 'MIT'
@@ -25,6 +25,7 @@ Gem::Specification.new do |spec|
     Gemfile.lock
     LICENSE.txt
     README.md
+    dhtml.gemspec
   ]
 
   spec.require_paths = %w[lib]
