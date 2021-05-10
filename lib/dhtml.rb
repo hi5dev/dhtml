@@ -35,7 +35,7 @@ module DHTML
   end
 
   # An underscore is added to HTML tags that already have Ruby methods. This makes it both easy to remember, and to
-  # strip them out
+  # detect them in #write_html_tag.
   begin
     alias_method :_p, :write_html_tag
     alias_method :_select, :write_html_tag
