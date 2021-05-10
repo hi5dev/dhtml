@@ -19,8 +19,8 @@ html(lang: 'en') {
   body {
     div(id: 'main') {
       _p { <<~TEXT }
-        Some of Ruby's internal methods would be overwritten if this library added a method for all the HTML tags. To
-        solve this, the alias for these methods begins with an underscore:
+        Some of Ruby's internal methods would be overwritten if this library added a method for all the
+        HTML tags. To solve this, the alias for these methods begins with an underscore:
       TEXT
 
       ol {
@@ -36,7 +36,8 @@ puts read_html
 
 ## Proof of Concept
 
-Using Ruby to generate HTML makes it possible to write modular, easily testable views. Here's a simple example:
+Using Ruby to generate HTML makes it possible to write modular, easily testable views. Here's a simple
+example:
 
 ```ruby
 module Layout
