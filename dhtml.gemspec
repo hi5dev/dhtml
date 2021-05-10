@@ -10,13 +10,13 @@ Gem::Specification.new do |spec|
 
   spec.summary = 'A fast, simple, and elegant DSL for generating HTML using Ruby. Also compatible with Opal.'
   spec.description = spec.summary
-  spec.homepage = 'https://github.com/hi5dev/dhtml'
+  spec.homepage = 'https://www.hi5dev/dhtml'
   spec.license = 'MIT'
 
   spec.required_ruby_version = Gem::Requirement.new('>= 2.4.0')
 
   spec.metadata['homepage_uri'] = spec.homepage
-  spec.metadata['source_code_uri'] = spec.homepage
+  spec.metadata['source_code_uri'] = 'https://github.com/hi5dev/dhtml'
   spec.metadata['changelog_uri'] = 'https://github.com/hi5dev/dhtml/blob/base/CHANGELOG.md'
 
   spec.files = Dir[File.expand_path(File.join('lib', '**', '*.rb'), __dir__)] + %w[
