@@ -1,5 +1,10 @@
 # DHTML
 
+**This documentation is for unreleased code. You may need to consult the [latest version] of the README if you're using
+Bundler.**
+
+[latest version]: https://github.com/hi5dev/dhtml/blob/v0.1.0/README.md
+
 A fast, simple, and elegant DSL for generating HTML using Ruby that is compatible with [Opal](https://opalrb.com/).
 
 Here's an example:
