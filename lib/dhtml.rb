@@ -41,7 +41,7 @@ module DHTML
     alias_method :_select, :write_html_tag
   end
 
-  # The HTML tags are aliased to #html_tag, which uses reflection to determine which tag to generate.
+  # The HTML tags are aliased to #write_html_tag, which uses reflection to determine which tag to generate.
   begin
     alias_method :a, :write_html_tag
     alias_method :abbr, :write_html_tag
