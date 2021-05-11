@@ -19,13 +19,17 @@ Gem::Specification.new do |spec|
   spec.metadata['source_code_uri'] = 'https://github.com/hi5dev/dhtml'
   spec.metadata['changelog_uri'] = 'https://github.com/hi5dev/dhtml/blob/base/CHANGELOG.md'
 
-  spec.files = Dir[File.expand_path(File.join('lib', '**', '*.rb'), __dir__)] + %w[
+  spec.files = %w[
     CHANGELOG.md
+    dhtml.gemspec
     Gemfile
     Gemfile.lock
+    lib/dhtml.rb
+    lib/dhtml/document.rb
+    lib/dhtml/opal.rb
+    lib/dhtml/version.rb
     LICENSE.txt
     README.md
-    dhtml.gemspec
   ]
 
   spec.require_paths = %w[lib]
