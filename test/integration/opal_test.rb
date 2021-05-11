@@ -24,7 +24,9 @@ class OpalTest < Minitest::Test
   end
 
   def test_opal_eval
-    actual = CGI.pretty(`node #{@file.path}`)
+    result = `node #{@file.path}`
+
+    actual = CGI.pretty(result)
 
     expected = read_fixture('example.html')
 
