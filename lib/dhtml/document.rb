@@ -96,6 +96,18 @@ module DHTML
 
     alias_method :h, :html_escape
 
+    # Reads and formats the document in a way presentable to a human.
+    #
+    # @note Not available to Opal.
+    # @param [String] indent string.
+    # @return [String]
+    # @since 0.1.4
+    def pretty_html(indent: ' ' * 2)
+      require 'cgi' unless defined?(CGI)
+
+      CGI.pretty(read_html, indent)
+    end if RUBY_ENGINE != 'opal'
+
     # Reads the entire HTML document.
     #
     # @return [String]
@@ -120,10 +132,14 @@ module DHTML
     # @return [Integer] Number of bytes written to the stream.
     # @since 0.1.0
     def write_html_element(tag, attributes = {})
+      length = document.length
+
       document << '<'
       document << tag
       document << " #{html_attributes(attributes)}" unless attributes.empty?
       document << '>'
+
+      document.length - length
     end
 
     # Write a tag to the HTML document.
@@ -141,6 +157,9 @@ module DHTML
       tag = tag.to_s
       tag = tag[1..-1] if tag[0] == '_'
 
+      # Used to calculate the number of bytes written for the return value.
+      length = document.length
+
       # Opening tag with its HTML attributes - e.g. <div id="main">
       write_html_element(tag, attributes)
 
@@ -152,6 +171,9 @@ module DHTML
 
       # Close the tag when necessary.
       document.write("</#{tag}>") if content.is_a?(String) || block_given? || !void?(tag.to_sym)
+
+      # Total number of bytes written by this method.
+      document.length - length
     end
   end
 end

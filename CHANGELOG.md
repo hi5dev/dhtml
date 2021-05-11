@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog], and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
+### Added
+- `pretty_html` method that formats the document in a way presentable to a human.
+
+### Fixes
+- `write_html_tag` and `write_html_element` return the number of bytes written.
 
 ## [0.1.2] - 2021-05-10
 ### Added
