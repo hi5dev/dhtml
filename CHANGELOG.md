@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+## [0.1.3] - 2021-05-10
+### Fixed
+- The gemspec no longer uses absolute paths for the sources.
+
 ## [0.1.2] - 2021-05-10
 ### Added
 - `reset` method so the document can be generated more than once.
