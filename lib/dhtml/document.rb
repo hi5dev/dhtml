@@ -30,6 +30,7 @@ module DHTML
     #
     # @param [Symbol] type of document
     # @return [Integer] number of bytes written to the document.
+    # @since 0.1.0
     def doctype(type)
       tag = case type
       when :html3
